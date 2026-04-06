@@ -9,7 +9,7 @@ This project contains an ER diagram for a small store selling thrifted and handm
 - Payments are linked to orders to avoid redundancy.
 
 ## Entities
-Users, Products, Orders, Order Items, Payments
+customers, Products, Orders, Order Items, Payments
 
 ## Diagram
-![ER Diagram](./img.svg)
+![ER Diagram](./img.png)
