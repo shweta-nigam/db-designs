@@ -1,0 +1,134 @@
+users[icon: user, color: red]{
+  id string pk
+  role enum [admin, trainer, client ]
+  first_name string varchar(50)
+  last_name string varchar(50)
+  address string 
+  email string varchar(322)
+  phone_no string char(10)
+  isActive boolean
+
+ updatedAt timestamp
+ createAt timestamp 
+}
+
+trainer_clients[icon: users, color: red]{
+  id string pk
+  clientId sring fk
+  trainerId string fk
+}
+
+plans[icon: notebook, color: yellow]{
+  id string pk
+  trainerId string fk
+  name string
+  description string
+  note? string
+  duration_days number
+  price number
+  isActive boolean
+  features string[]
+
+ updatedAt timestamp
+ createAt timestamp 
+
+}
+
+sessions [icon: card, color: blue]{
+  id string pk
+  clientId string fk
+  trainerId string fk
+  name string
+  description string
+  note? string
+  status enum [scheduled, completed, cancelled ]
+  scheduled_at time
+
+ updatedAt timestamp
+ createAt timestamp 
+}
+
+progress [icon: clipboard, color: orange]{
+  id string pk
+  clientId string fk
+  weight number
+  chest number
+  hips number
+  waist number
+  note string
+  recorded_at date
+
+ updatedAt timestamp
+ createAt timestamp
+}
+
+check_ins [icon: clipboard-check]{
+  id string pk
+  clientId string fk
+  trainerId string fk
+  week_number number
+  feedback string
+}
+
+subscriptions [icon: credit-card, color:purple]{
+  id string pk
+  clientId string fk
+  planId string fk
+  name string 
+  description string
+  start_date date
+  end_date date
+  status enum [active, expired, cancelled]
+
+ updatedAt timestamp
+ createAt timestamp
+}
+
+diet_entries [icon: fridge, color: orange]{
+ id string pk
+ trainerId string fk
+ clientId string fk
+ date date
+ meal_type enum [breakfast, lunch, dinner, snack ]
+ food_items string
+ calories number
+
+ updatedAt timestamp
+ createAt timestamp
+}
+
+payments [icon: rupee, color: green]{
+  id string pk
+  subscriptionId fk
+  method enum [cash, card, upi]
+  trasnsaction_ref string
+  amount number
+
+  updatedAt timestamp
+  createAt timestamp
+}
+
+
+
+users.id < plans.trainerId
+
+users.id < subscriptions.clientId
+
+plans.id < subscriptions.planId
+
+subscriptions.id < payments.subscriptionId
+
+users.id < sessions.clientId
+users.id < sessions.trainerId
+
+users.id < progress.clientId
+
+users.id < trainer_clients.clientId
+users.id < trainer_clients.trainerId
+
+users.id < check_ins.clientId
+users.id < check_ins.trainerId
+
+users.id < diet_entries.clientId
+users.id < diet_entries.trainerId
+
