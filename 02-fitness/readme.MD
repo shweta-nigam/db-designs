@@ -66,4 +66,4 @@ Stores diet instructions assigned by trainers to clients on a daily basis.
 ![ER Diagram](./img.svg)
 
 ## Code
-![ER Code](./code.txt)
+[ View ER Code](./code.txt)
