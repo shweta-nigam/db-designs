@@ -1,0 +1,101 @@
+users [icon: user, color: blue] {
+  id string pk
+  first_name varchar(50)
+  last_name varchar(50)
+  email varchar(100) unique
+  phone_no varchar(15)
+  role enum [patient, doctor, admin]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+doctor_profiles [icon: stethoscope, color: purple] {
+  id string pk
+  doctorId string fk
+  specialization varchar(100)
+  experience_years int
+}
+
+appointments [icon: calendar, color: orange] {
+  id string pk
+  patientId string fk  
+  doctorId string fk   
+
+  scheduled_at datetime
+  status enum [booked, cancelled, completed, no_show]
+  reason string
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+consultations [icon: activity, color: red] {
+  id string pk
+  appointmentId string fk
+  patientId string fk
+  doctorId string fk
+
+  diagnosis text
+  prescription text
+  notes text
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+diagnostic_tests [icon: flask, color: green] {
+  id string pk
+  name string
+  description string
+}
+
+consultation_tests [icon: clipboard-list, color: green] {
+  id string pk
+  consultationId string fk
+  testId string fk
+  status enum [prescribed, completed]
+}
+
+reports [icon: file-text, color: teal] {
+  id string pk
+  consultationTestId string fk
+  file_url string
+  result_summary text
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+payments [icon: credit-card, color: yellow] {
+  id string pk
+  appointmentId string fk
+  patientId string fk
+
+  amount decimal
+  method enum [cash, card, upi]
+  status enum [pending, paid, failed]
+  reference_no string
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+
+users.id < appointments.patientId
+users.id < appointments.doctorId
+
+users.id - doctor_profiles.doctorId
+
+appointments.id - consultations.appointmentId
+
+users.id < consultations.patientId
+users.id < consultations.doctorId
+
+consultations.id < consultation_tests.consultationId
+diagnostic_tests.id < consultation_tests.testId
+
+consultation_tests.id - reports.consultationTestId
+
+appointments.id < payments.appointmentId
+users.id < payments.patientId
