@@ -1,0 +1,92 @@
+vehicles [icon: car, color: blue] {
+  id string pk
+  owner_name string 
+  number_plate string unique
+  vehicle_category_Id string fk
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+vehicles_categories [icon: truck, color: blue] {
+  id string pk
+  name enum [ bike, car, suv, ev ]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+parking_spots [icon: home] {
+  id string pk
+  zone_id string fk
+  spot_category_id string fk
+  is_available boolean
+
+  createdAt timestamp
+  updatedAt timestamp
+  
+}
+
+parking_spot_categories [icon: notebook, color: orange ]  {
+  id string pk
+  name enum [normal, vip, staff, exhibitor, ev_charging]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+parking_zones [icon: folder, color: red] {
+  id string pk
+  name string
+  level int
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+tickets [icon: ticket, color: yellow] {
+  id string pk
+  session_id string fk
+  issue_time timestamp
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+sessions [icon: mail, color: green] {
+  id string pk
+  vehicleId string fk
+  parking_spot_id string fk
+
+  entry_time timestamp
+  exit_time timestamp
+
+  status enum [active, completed]
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+payment [icon: credit-card, color: purple]{
+  id string pk
+  session_id string fk
+  method enum [cash, card, upi]
+  status enum[ pending, success, failed]
+  reference_no string
+  amount decimal
+
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+vehicles.vehicle_category_id > vehicles_categories.id
+
+sessions.vehicleId > vehicles.id
+sessions.parking_spot_id > parking_spots.id
+
+parking_spots.zone_id > parking_zones.id
+parking_spots.spot_category_id > parking_spot_categories.id
+
+tickets.session_id > sessions.id
+
+payment.session_id > sessions.id
+
