@@ -1,0 +1,87 @@
+buildings [icon: building, color: blue] {
+  id string pk
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+floors [icon: layers, color: teal] {
+  id string pk
+  buildingId string fk
+  level number
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+elevators [icon: move-vertical, color: purple] {
+  id string pk
+  buildingId string fk
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+elevator_shaft [icon: columns, color: gray] {
+  id string pk
+  elevatorId string fk
+  buildingId string fk
+}
+
+elevator_floor [icon: git-merge, color: pink] {
+  id string pk
+  elevatorId string fk
+  floorId string fk
+}
+
+floor_request [icon: arrow-up-circle, color: orange] {
+  id string pk
+  floorId string fk
+  direction enum [up, down]
+  status enum [pending, assigned, completed]
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+rides [icon: navigation, color: green] {
+  id string pk
+  requestId string fk
+  elevatorId string fk
+  startFloorId string fk
+  endFloorId string fk
+  startTime timestamp
+  endTime timestamp
+  status string
+}
+
+
+elevator_status_monitoring [icon: activity, color: yellow] {
+  id string pk
+  elevatorId string fk
+  status enum [idle, moving, maintenance]
+  timestamp
+}
+
+maintenance_tracking [icon: tool, color: red] {
+  id string pk
+  elevatorId string fk
+  startTime 
+  endTime
+  note?
+  reason string
+  status string
+}
+
+
+buildings.id < elevators.buildingId
+buildings.id < floors.buildingId
+
+elevators.id - elevator_shaft.elevatorId
+
+elevators.id < elevator_floor.elevatorId
+floors.id < elevator_floor.floorId
+
+floors.id < floor_request.floorId
+
+floor_request.id - rides.requestId
+elevators.id < rides.elevatorId
+
+elevators.id < maintenance_tracking.elevatorId
+elevators.id < elevator_status_monitoring.elevatorId
